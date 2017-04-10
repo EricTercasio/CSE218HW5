@@ -52,6 +52,33 @@ public class App extends Application{
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(50);
         Scene scene = new Scene(hbox,800,800);
+        queueButton.setOnAction(e->{
+            if(comboBox.getSelectionModel().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please select a student from the comboBox");
+                alert.showAndWait();
+            }else{
+                if(comboBox.getSelectionModel().getSelectedItem().equals("Eric")) {
+                    studentQueue.insert(s1);
+                    comboBox.getItems().remove("Eric");
+                }
+                else if(comboBox.getSelectionModel().getSelectedItem().equals("Tim")) {
+                    studentQueue.insert(s2);
+                    comboBox.getItems().remove("Tim");
+                }
+                else if(comboBox.getSelectionModel().getSelectedItem().equals("Pete")) {
+                    studentQueue.insert(s3);
+                    comboBox.getItems().remove("Pete");
+                }
+                else if(comboBox.getSelectionModel().getSelectedItem().equals("Joe")) {
+                    studentQueue.insert(s4);
+                    comboBox.getItems().remove("Joe");
+                }
+                else if(comboBox.getSelectionModel().getSelectedItem().equals("Liam")) {
+                    studentQueue.insert(s5);
+                    comboBox.getItems().remove("Liam");
+                }
+        }});
         stackButton.setOnAction(e->{
             if(comboBox.getSelectionModel().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -81,8 +108,8 @@ public class App extends Application{
             }
         });
         resetButton.setOnAction(e->{
-            comboBox.getItems().removeAll();
-            comboBox.getItems().addAll(options);
+            comboBox.getItems().clear();
+            comboBox.getItems().addAll("Eric","Tim","Pete","Joe","Liam");
             stackArea.clear();
             queueArea.clear();
             stackArea.appendText("Students popped out from stack");
@@ -91,7 +118,34 @@ public class App extends Application{
             studentStack.reset();
         });
         showButton.setOnAction(e->{
-
+            if (!studentStack.isEmpty() & !studentQueue.isEmpty()) {
+                Student temp = studentStack.pop();
+                String tempName = temp.getName();
+                Double tempGpa = temp.getGpa();
+                int tempId = temp.getId();
+                stackArea.appendText("\nName: " + tempName + " GPA: " + tempGpa + " ID: " + tempId);
+                temp = studentQueue.remove();
+                tempName = temp.getName();
+                tempGpa = temp.getGpa();
+                tempId = temp.getId();
+                queueArea.appendText("\nName: " + tempName + " GPA: " + tempGpa + " ID: " + tempId);
+            }else if(!studentStack.isEmpty() & studentQueue.isEmpty()){
+                Student temp = studentStack.pop();
+                String tempName = temp.getName();
+                Double tempGpa = temp.getGpa();
+                int tempId = temp.getId();
+                stackArea.appendText("\nName: " + tempName + " GPA: " + tempGpa + " ID: " + tempId);
+            }else if(studentStack.isEmpty() & !studentQueue.isEmpty()){
+                Student temp = studentQueue.remove();
+                String tempName = temp.getName();
+                Double tempGpa = temp.getGpa();
+                int tempId = temp.getId();
+                queueArea.appendText("\nName: " + tempName + " GPA: " + tempGpa + " ID: " + tempId);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Nothing in queue or stack.");
+                alert.showAndWait();
+            }
         });
         primaryStage.setScene(scene);
         primaryStage.show();
